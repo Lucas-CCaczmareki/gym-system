@@ -18,9 +18,12 @@ import gym_backend.enums.MuscleRole;
 @Service
 public class VolumeCalculator { 
     //Atributos
+
+    // This also shouldn't be here. The data structure should be somewhere else.
     private List<WorkoutDTO> week = new ArrayList<>(); // receives a week of training   
     private Map<Muscle, Double> volume = new HashMap<>();
     
+    // This is not supposed to be here, but will be for test purposes
     public void addWorkout(WorkoutDTO workout) {
         week.add(workout);  // add a workout to the week
     }
@@ -39,10 +42,6 @@ public class VolumeCalculator {
                     Muscle muscle = target.getMuscle();
                     Double muscle_vol = (double) exercise.getSets().size();
 
-                    // Debugging
-
-
-                    
                     if(target.getRole() == MuscleRole.PRIMARY) {
                         // The function merge receives the key, the value and a function
                         // If the place you are trying to update already has a value, it will merge
