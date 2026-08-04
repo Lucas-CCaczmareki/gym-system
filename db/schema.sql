@@ -5,7 +5,7 @@ SET search_path TO gymsystem;
 CREATE TYPE measure_unit AS ENUM ('kg', 'lb');
 
 --adicionar mais aqui no futuro
-CREATE TYPE tecnique AS ENUM ('normal', 'drop_set', 'rest_pause', 'cluster_set'); 
+CREATE TYPE technique AS ENUM ('normal', 'drop_set', 'rest_pause', 'cluster_set'); 
 
 CREATE TYPE equipment AS ENUM ('barbell', 'smith', 'pulley', 'machine', 'dumbbell', 'bodyweight');
 
@@ -58,6 +58,43 @@ CREATE TABLE session (
     UNIQUE (date, idWorkout) --mantém unicidade desses elementos
 );
 
+CREATE TABLE exercise (
+    "name" VARCHAR(256) PRIMARY KEY,
+    equip equipment NOT NULL,
+    base_weight FLOAT NOT NULL,
+    "type" exercise_type NOT NULL
+);
+
+CREATE TABLE muscle (
+    "name" VARCHAR(256) PRIMARY KEY
+);
+
+CREATE TABLE mscl_activation (
+    idExercise VARCHAR(256) NOT NULL,
+    idMuscle VARCHAR(256) NOT NULL,
+    "role" muscle_role NOT NULL,
+
+    PRIMARY KEY (idExercise, idMuscle),
+    FOREIGN KEY (idExercise) REFERENCES exercise("name") ON DELETE CASCADE,
+    FOREIGN KEY (idMuscle) REFERENCES muscle("name") ON DELETE CASCADE
+);
+
+CREATE TABLE plan (
+    id SERIAL PRIMARY KEY,
+    t_isometric FLOAT DEFAULT 0.0,
+    "sets" INTEGER NOT NULL,
+    reps INTEGER NOT NULL,
+    rir INTEGER CHECK (rir >= 0), 
+    t_rest FLOAT,
+
+    idWorkout INTEGER NOT NULL,
+    idExercise VARCHAR(256) NOT NULL,
+    
+    FOREIGN KEY (idWorkout) REFERENCES workout(id) ON DELETE CASCADE,
+    FOREIGN KEY (idExercise) REFERENCES exercise("name") ON DELETE CASCADE, -- se n tiver execução, apaga, se tiver vai bloquear
+    UNIQUE (idWorkout, idExercise)
+);
+
 -- representa 1 execução (todas as séries) de um exercício naquele treino
 CREATE TABLE execution (
     idSession INTEGER NOT NULL,
@@ -85,41 +122,4 @@ CREATE TABLE training_set (
     idPlan INTEGER NOT NULL,
 
     FOREIGN KEY (idSession, idPlan) REFERENCES execution(idSession, idPlan) ON DELETE CASCADE
-);
-
-CREATE TABLE plan (
-    id SERIAL PRIMARY KEY,
-    t_isometric FLOAT DEFAULT 0.0,
-    "sets" INTEGER NOT NULL,
-    reps INTEGER NOT NULL,
-    rir INTEGER CHECK (rir >= 0), 
-    t_rest FLOAT,
-
-    idWorkout INTEGER NOT NULL,
-    idExercise VARCHAR(256) NOT NULL,
-    
-    FOREIGN KEY (idWorkout) REFERENCES workout(id) ON DELETE CASCADE,
-    FOREIGN KEY (idExercise) REFERENCES exercise("name") ON DELETE CASCADE, -- se n tiver execução, apaga, se tiver vai bloquear
-    UNIQUE (idWorkout, idExercise)
-);
-
-CREATE TABLE exercise (
-    "name" VARCHAR(256) PRIMARY KEY,
-    equip equipment NOT NULL,
-    base_weight FLOAT NOT NULL,
-    "type" exercise_type NOT NULL
-);
-
-CREATE TABLE muscle (
-    "name" VARCHAR(256) PRIMARY KEY
-);
-
-CREATE TABLE mscl_activation (
-    idExercise VARCHAR(256) NOT NULL,
-    idMuscle VARCHAR(256) NOT NULL,
-    "role" muscle_role NOT NULL,
-
-    PRIMARY KEY (idExercise, idMuscle),
-    FOREIGN KEY (idExercise) REFERENCES exercise("name") ON DELETE CASCADE,
-    FOREIGN KEY (idMuscle) REFERENCES muscle("name") ON DELETE CASCADE
 );
