@@ -1,3 +1,43 @@
+-criei um schema pra ficar mais fácil de ficar resetando o banco se for necessário (dá só um drop schema)
+
+# psql commands
+psql -h localhost -p 5432 -U lucas gym-system   # conecta no banco de dados
+createdb nome_do_banco                          # cria um banco
+dropdb nome_do_banco                            # apaga um banco (cuidado)
+psql -l                                         # lista todos os bancos
+psql -d nome_do_banco                           # conecta no banco (abre o prompt interativo)
+psql -d nome_do_banco -f arquivo.sql            # roda um script sem entrar no modo interativo
+
+\l              lista bancos
+\c nome_banco   troca de banco (conecta em outro)
+\dt             lista as tabelas do banco atual
+\d nome_tabela  mostra estrutura da tabela (colunas, tipos, PK, FK)
+\d+ nome_tabela igual acima, mas com mais detalhe (tamanho, storage)
+\i arquivo.sql  executa um arquivo .sql de dentro do psql
+\q              sai do psql
+\?              ajuda com todos os comandos do psql
+\dn             lista esquemas
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # gym-system-backend
 
 ## PRÓXIMOS PASSOS
