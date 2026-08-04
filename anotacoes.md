@@ -2,6 +2,7 @@
 
 # psql commands
 psql -h localhost -p 5432 -U lucas gym-system   # conecta no banco de dados
+SET search_path TO gymsystem                    # muda pra dentro do schema q criamos.
 createdb nome_do_banco                          # cria um banco
 dropdb nome_do_banco                            # apaga um banco (cuidado)
 psql -l                                         # lista todos os bancos

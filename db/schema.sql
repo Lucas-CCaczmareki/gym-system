@@ -1,4 +1,5 @@
-CREATE SCHEMA IF NOT EXISTS gymsystem;
+DROP SCHEMA IF EXISTS gymsystem CASCADE;
+CREATE SCHEMA gymsystem;
 SET search_path TO gymsystem;
 
 -- enums (types)
@@ -7,7 +8,7 @@ CREATE TYPE measure_unit AS ENUM ('kg', 'lb');
 --adicionar mais aqui no futuro
 CREATE TYPE technique AS ENUM ('normal', 'drop_set', 'rest_pause', 'cluster_set'); 
 
-CREATE TYPE equipment AS ENUM ('barbell', 'smith', 'pulley', 'machine', 'dumbbell', 'bodyweight');
+-- CREATE TYPE equipment AS ENUM ('barbell', 'smith', 'pulley', 'machine', 'dumbbell', 'bodyweight');
 
 CREATE TYPE exercise_type AS ENUM ('isolated', 'compound');
 
@@ -58,11 +59,21 @@ CREATE TABLE session (
     UNIQUE (date, idWorkout) --mantém unicidade desses elementos
 );
 
+CREATE TABLE equipment (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL,
+    base_weight FLOAT NOT NULL
+);
+
 CREATE TABLE exercise (
-    "name" VARCHAR(256) PRIMARY KEY,
-    equip equipment NOT NULL,
-    base_weight FLOAT NOT NULL,
-    "type" exercise_type NOT NULL
+    id SERIAL PRIMARY KEY,
+    "name" VARCHAR(256) NOT NULL,
+    "type" exercise_type NOT NULL,
+        
+    idEquipment INTEGER NOT NULL,
+
+    FOREIGN KEY (idEquipment) REFERENCES equipment(id) ON DELETE RESTRICT,
+    UNIQUE(name, idEquipment)
 );
 
 CREATE TABLE muscle (
@@ -70,12 +81,12 @@ CREATE TABLE muscle (
 );
 
 CREATE TABLE mscl_activation (
-    idExercise VARCHAR(256) NOT NULL,
+    idExercise INTEGER NOT NULL,
     idMuscle VARCHAR(256) NOT NULL,
     "role" muscle_role NOT NULL,
 
     PRIMARY KEY (idExercise, idMuscle),
-    FOREIGN KEY (idExercise) REFERENCES exercise("name") ON DELETE CASCADE,
+    FOREIGN KEY (idExercise) REFERENCES exercise(id) ON DELETE CASCADE,
     FOREIGN KEY (idMuscle) REFERENCES muscle("name") ON DELETE CASCADE
 );
 
@@ -88,10 +99,10 @@ CREATE TABLE plan (
     t_rest FLOAT,
 
     idWorkout INTEGER NOT NULL,
-    idExercise VARCHAR(256) NOT NULL,
+    idExercise INTEGER NOT NULL,
     
     FOREIGN KEY (idWorkout) REFERENCES workout(id) ON DELETE CASCADE,
-    FOREIGN KEY (idExercise) REFERENCES exercise("name") ON DELETE CASCADE, -- se n tiver execução, apaga, se tiver vai bloquear
+    FOREIGN KEY (idExercise) REFERENCES exercise(id) ON DELETE CASCADE, -- se n tiver execução, apaga, se tiver vai bloquear
     UNIQUE (idWorkout, idExercise)
 );
 
