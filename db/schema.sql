@@ -69,11 +69,12 @@ CREATE TABLE exercise (
     id SERIAL PRIMARY KEY,
     "name" VARCHAR(256) NOT NULL,
     "type" exercise_type NOT NULL,
+    f_oneside BOOLEAN DEFAULT FALSE NOT NULL,
         
     idEquipment INTEGER NOT NULL,
 
     FOREIGN KEY (idEquipment) REFERENCES equipment(id) ON DELETE RESTRICT,
-    UNIQUE(name, idEquipment)
+    UNIQUE(name, idEquipment, f_oneside)
 );
 
 CREATE TABLE muscle (
@@ -120,6 +121,9 @@ CREATE TABLE execution (
     FOREIGN KEY (idPlan) REFERENCES plan(id) ON DELETE RESTRICT
 );
 
+
+-- Se algum dia eu quiser expandir, aqui talvez seja um bom lugar pra eu colocar o tipo da pegada
+-- mas isso aqui não influencia tanto no resultado q eu quero, q é registro de progressão de carga
 CREATE TABLE training_set (
     id SERIAL PRIMARY KEY,
     "weight" FLOAT DEFAULT 0.0,
