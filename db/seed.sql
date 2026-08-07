@@ -1,6 +1,6 @@
 -- zera tudo toda vez q eu for rodar o seed.sql. util pra ir testando nesse começo
 TRUNCATE TABLE usr, exercise, muscle, mscl_activation, routine, workout,
-    routine_workout, plan, session, execution, training_set
+    routine_workout, plan, session, execution, training_set, equipment
     RESTART IDENTITY CASCADE;
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
@@ -37,165 +37,243 @@ INSERT INTO muscle ("name") VALUES
     ('Abdômen'),
     ('Flexores de quadril');
 
+-- -----------------------------------------------------------------------------------------------
 -- Isso aqui foi gerado por IA com base na base de exercícios no "exercises.md" que eu criei.
 -- deve ter jeitos mais inteligentes de fazer depois, vou estudar. Um amigo me recomendou ORM insert.
 
 INSERT INTO exercise ("name", "type", idEquipment, f_oneside) VALUES
     -- Peito
-    ('Supino reto', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Supino reto', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell')),
-    ('Supino reto', 'compound', (SELECT id FROM equipment WHERE name = 'Smith')),
-    ('Supino reto', 'compound', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Supino reto', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
+    ('Supino reto', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Supino reto', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Supino reto', 'compound', (SELECT id FROM equipment WHERE name = 'Smith'), FALSE),
+    ('Supino reto', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Supino reto', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
 
-    ('Supino inclinado', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Supino inclinado', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell')),
-    ('Supino inclinado', 'compound', (SELECT id FROM equipment WHERE name = 'Smith')),
-    ('Supino inclinado', 'compound', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Supino inclinado', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
+    ('Supino inclinado', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Supino inclinado', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Supino inclinado', 'compound', (SELECT id FROM equipment WHERE name = 'Smith'), FALSE),
+    ('Supino inclinado', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Supino inclinado', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
 
-    ('Supino declinado', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Supino declinado', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell')),
-    ('Supino declinado', 'compound', (SELECT id FROM equipment WHERE name = 'Smith')),
-    ('Supino declinado', 'compound', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Supino declinado', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'));
+    ('Supino declinado', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Supino declinado', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Supino declinado', 'compound', (SELECT id FROM equipment WHERE name = 'Smith'), FALSE),
+    ('Supino declinado', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Supino declinado', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
 
-    ('Mergulho em paralela', 'compound', (SELECT id FROM equipment WHERE name = 'Bodyweight')),
-    ('Mergulho em paralela', 'compound', (SELECT id FROM equipment WHERE name = 'Machine')), --num graviton por exemplo
+    ('Mergulho em paralela', 'compound', (SELECT id FROM equipment WHERE name = 'Bodyweight'), FALSE),
+    ('Mergulho em paralela', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE), --num graviton por exemplo
     
-    ('Crucifixo', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Crucifixo inclinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Crucifixo declinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
+    ('Crucifixo', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Crucifixo inclinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Crucifixo declinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
 
-    ('Crucifixo', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'));
-    ('Crucifixo inclinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine')); -- no peckdeck impossivel, mas tem máquinas pra isso
-    ('Crucifixo declinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine')); -- variação da posição do banco no peck deck por exemplo
+    ('Crucifixo', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Crucifixo inclinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE), -- no peckdeck impossivel, mas tem máquinas pra isso
+    ('Crucifixo declinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE), -- variação da posição do banco no peck deck por exemplo
     
-    ('Crossover', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley')),            -- mesmo exercicio mas muda de nome
-    ('Crossover inclinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley')),  -- dá pra chamar de crossover polia baixa
-    ('Crossover declinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley')),  -- da pra chamar de crossover polia alta
+    ('Crossover', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),            -- mesmo exercicio mas muda de nome
+    ('Crossover inclinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),  -- dá pra chamar de crossover polia baixa
+    ('Crossover declinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),  -- da pra chamar de crossover polia alta
 
     -- Costas
-    ('Barra fixa', 'compound', (SELECT id FROM equipment WHERE name = 'Bodyweight')),
-    ('Barra fixa', 'compound', (SELECT id FROM equipment WHERE name = 'Machine')),      -- graviton
-    ('Pulley frente', 'compound', (SELECT id FROM equipment WHERE name = 'Pulley')),    -- mesmo exercicio mas muda de nome
+    ('Barra fixa', 'compound', (SELECT id FROM equipment WHERE name = 'Bodyweight'), FALSE),
+    ('Barra fixa', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),      -- graviton
+    ('Pulley frente', 'compound', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),    -- mesmo exercicio mas muda de nome
 
-    ('Face pull', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley')),
+    ('Face pull', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
 
-    ('Pulldown', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley')),
-    ('Pulldown', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine')),
+    ('Pulldown', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+    ('Pulldown', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
 
-    ('Remada baixa', 'compound', (SELECT id FROM equipment WHERE name = 'Pulley')),
+    ('Remada baixa', 'compound', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
     ('Remada baixa', 'compound', (SELECT id FROM equipment WHERE name = 'Pulley'), TRUE), --unilateral
-    ('Remada baixa', 'compound', (SELECT id FROM equipment WHERE name = 'Machine')),
+    ('Remada baixa', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
     ('Remada baixa', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), TRUE), --unilateral
     
-    ('Remada curvada', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Remada curvada', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell')),
-    ('Remada curvada', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Remada curvada', 'compound', (SELECT id FROM equipment WHERE name = 'Machine')),
+    ('Remada curvada', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Remada curvada', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Remada curvada', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Remada curvada', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
 
-    ('Remada cavalinho', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Remada cavalinho', 'compound', (SELECT id FROM equipment WHERE name = 'Machine')),
+    ('Remada cavalinho', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Remada cavalinho', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
 
     ('Remada serrote', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'), TRUE),
 
-    ('Remada articulada', 'compound', (SELECT id FROM equipment WHERE name = 'Pulley')),
-    ('Remada articulada', 'compound', (SELECT id FROM equipment WHERE name = 'Machine')),
+    ('Remada articulada', 'compound', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+    ('Remada articulada', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
 
-    --continuar revisando daqui
     -- Ombro
-    ('Desenvolvimento militar', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Desenvolvimento militar', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell')),
-    ('Desenvolvimento militar', 'compound', (SELECT id FROM equipment WHERE name = 'Smith')),
-    ('Desenvolvimento com halteres', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Desenvolvimento Arnold', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Elevação lateral', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Elevação lateral', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley')),
-    ('Elevação frontal', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Elevação frontal', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley')),
-    ('Encolhimento', 'isolated', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Encolhimento', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Encolhimento', 'isolated', (SELECT id FROM equipment WHERE name = 'Smith'));
-    ('Crucifixo invertido', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Crucifixo invertido', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'));
+    ('Desenvolvimento militar', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Desenvolvimento militar', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Desenvolvimento militar', 'compound', (SELECT id FROM equipment WHERE name = 'Smith'), FALSE),
+    ('Desenvolvimento com halteres', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Desenvolvimento Arnold', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
 
+    ('Elevação lateral', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Elevação lateral', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+    ('Elevação lateral', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+
+    ('Remada alta', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), TRUE),
+    ('Remada alta', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), TRUE),
+
+    ('Elevação frontal', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Elevação frontal', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+
+    ('Encolhimento', 'isolated', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Encolhimento', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Encolhimento', 'isolated', (SELECT id FROM equipment WHERE name = 'Smith'), FALSE),
+
+    ('Crucifixo invertido', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Crucifixo invertido', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+
+    
+    -- não vou botar os unilaterais aqui por que não vai influenciar o peso.
     -- Biceps
-    ('Rosca direta', 'isolated', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Rosca direta', 'isolated', (SELECT id FROM equipment WHERE name = 'Olympic barbell')),
-    ('Rosca barra W', 'isolated', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Rosca alternada com halteres', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Rosca martelo', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Rosca martelo', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley')),
-    ('Rosca Scott', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Rosca Scott', 'isolated', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Rosca na polia', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley')),
-    ('Rosca concentrada', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'));
+    ('Rosca direta', 'isolated', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Rosca direta', 'isolated', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Rosca direta', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Rosca direta', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+
+    ('Rosca martelo', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Rosca martelo', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+
+    ('Rosca alternada', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Rosca alternada', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE), --basicamente a martelo puxando pra fora no pulley c corda
+
+    ('Rosca Scott', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Rosca Scott', 'isolated', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Rosca Scott', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+
+    ('Rosca concentrada', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+
+    ('Rosca polia alta', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+
+    ('Rosca Bayesiana', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+
+    ('Rosca inclinada', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+
+    ('Rosca spider', 'isolated', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Rosca spider', 'isolated', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Rosca spider', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    
 
     -- Triceps
-    ('Tríceps testa', 'isolated', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Tríceps testa', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Tríceps francês', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Tríceps francês', 'isolated', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Tríceps na polia com barra reta', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley')),
-    ('Tríceps na polia com corda', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley')),
-    ('Tríceps supinado na polia', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'));
+    ('Tríceps na polia', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+    ('Tríceps na polia', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), TRUE), --esse unilateral muda a carga
+
+    ('Tríceps testa', 'isolated', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Tríceps testa', 'isolated', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Tríceps testa', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Tríceps testa', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+    ('Tríceps testa', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), TRUE), --unilat
+
+    ('Tríceps francês', 'isolated', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Tríceps francês', 'isolated', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Tríceps francês', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Tríceps francês', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+    ('Tríceps francês', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), TRUE), --unilat
+
+    ('Tríceps coice', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Tríceps coice', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+    ('Tríceps coice', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), TRUE),
+
+    ('Supino fechado', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Supino fechado', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+
 
     -- Quadríceps
-    ('Agachamento livre', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Agachamento livre', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell')),
-    ('Agachamento no Smith', 'compound', (SELECT id FROM equipment WHERE name = 'Smith')),
-    ('Agachamento hack', 'compound', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Leg press', 'compound', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Cadeira extensora', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Afundo com halteres', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Agachamento búlgaro', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'));
+    ('Agachamento', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Agachamento', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Agachamento', 'compound', (SELECT id FROM equipment WHERE name = 'Smith'), FALSE),
+    ('Agachamento', 'compound', (SELECT id FROM equipment WHERE name = 'Bodyweight'), FALSE),
+
+    ('Agachamento hack', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Agachamento pêndulo', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+
+    ('Leg press 45', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Leg press 90', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Leg press 180', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+
+
+    ('Cadeira extensora', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Cadeira extensora', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), TRUE),
+
+    ('Afundo', 'compound', (SELECT id FROM equipment WHERE name = 'Bodyweight'), FALSE),
+    ('Afundo', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE), -- tudo no chão
+
+    ('Agachamento búlgaro', 'compound', (SELECT id FROM equipment WHERE name = 'Bodyweight'), FALSE),
+    ('Agachamento búlgaro', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE), -- apoiado no banco
+    ('Agachamento búlgaro', 'compound', (SELECT id FROM equipment WHERE name = 'Smith'), FALSE),
 
     -- Posterior de coxa
-    ('Levantamento terra convencional', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Levantamento terra convencional', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell')),
-    ('Levantamento terra romeno', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Levantamento terra romeno', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell')),
-    ('Levantamento terra romeno', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Levantamento terra stiff', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Levantamento terra stiff', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell')),
-    ('Levantamento terra stiff', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Mesa flexora', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Mesa flexora em pé', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Good morning', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Good morning', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell'));
+    ('Levantamento terra', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Levantamento terra', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Levantamento terra', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+
+    ('Levantamento terra romeno', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Levantamento terra romeno', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Levantamento terra romeno', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Levantamento terra romeno', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+
+    ('Levantamento terra stiff', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Levantamento terra stiff', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Levantamento terra stiff', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Levantamento terra stiff', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+
+    ('Agachamento sumô', 'compound', (SELECT id FROM equipment WHERE name = 'Bodyweight'), FALSE),
+    ('Agachamento sumô', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Agachamento sumô', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
+    ('Agachamento sumô', 'compound', (SELECT id FROM equipment WHERE name = 'Dumbbell'), FALSE),
+    ('Agachamento sumô', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+
+    ('Cadeira flexora', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Cama flexora', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Cama flexora em pé', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+
+    ('Good morning', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Good morning', 'compound', (SELECT id FROM equipment WHERE name = 'Olympic barbell'), FALSE),
 
     -- Gluteos, adutores e abdutores
-    ('Elevação pélvica', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell')),
-    ('Elevação pélvica', 'compound', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Elevação pélvica', 'compound', (SELECT id FROM equipment WHERE name = 'Bodyweight')),
-    ('Ponte de glúteo', 'compound', (SELECT id FROM equipment WHERE name = 'Bodyweight')),
-    ('Ponte de glúteo', 'compound', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Cadeira abdutora', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Cadeira adutora', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'));
+    ('Elevação pélvica', 'compound', (SELECT id FROM equipment WHERE name = 'Barbell'), FALSE),
+    ('Elevação pélvica', 'compound', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Elevação pélvica', 'compound', (SELECT id FROM equipment WHERE name = 'Bodyweight'), FALSE),
+
+    ('Cadeira abdutora', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Cadeira adutora', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
 
     -- Panturrilha
-    ('Panturrilha em pé', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Panturrilha em pé', 'isolated', (SELECT id FROM equipment WHERE name = 'Smith')),
-    ('Panturrilha em pé unilateral', 'isolated', (SELECT id FROM equipment WHERE name = 'Dumbbell')),
-    ('Panturrilha em pé unilateral', 'isolated', (SELECT id FROM equipment WHERE name = 'Bodyweight')),
-    ('Panturrilha sentado', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Panturrilha no leg press', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'));
+    ('Panturrilha em pé', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Panturrilha em pé', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), TRUE),
+    ('Panturrilha em pé', 'isolated', (SELECT id FROM equipment WHERE name = 'Smith'), FALSE),
+    ('Panturrilha em pé', 'isolated', (SELECT id FROM equipment WHERE name = 'Smith'), TRUE),
+    ('Panturrilha em pé', 'isolated', (SELECT id FROM equipment WHERE name = 'Bodyweight'), FALSE),
+    ('Panturrilha em pé', 'isolated', (SELECT id FROM equipment WHERE name = 'Bodyweight'), TRUE),
+
+    ('Panturrilha sentado', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
 
     -- Core, abs
-    ('Abdominal declinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Bodyweight')),
-    ('Abdominal na corda', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley')),
-    ('Abdominal suspenso', 'isolated', (SELECT id FROM equipment WHERE name = 'Bodyweight')),
-    ('Abdominal com peso', 'isolated', (SELECT id FROM equipment WHERE name = 'Bodyweight')),
-    ('Prancha', 'isolated', (SELECT id FROM equipment WHERE name = 'Bodyweight'));
+    ('Abdominal declinado', 'isolated', (SELECT id FROM equipment WHERE name = 'Bodyweight'), FALSE),
+    ('Abdominal na corda', 'isolated', (SELECT id FROM equipment WHERE name = 'Pulley'), FALSE),
+    ('Abdominal suspenso', 'isolated', (SELECT id FROM equipment WHERE name = 'Bodyweight'), FALSE),
+    ('Abdominal dragonflag', 'isolated', (SELECT id FROM equipment WHERE name = 'Bodyweight'), FALSE),
 
-    ('Hiperextensão lombar', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine')),
-    ('Hiperextensão lombar', 'isolated', (SELECT id FROM equipment WHERE name = 'Bodyweight')),
-    ('Extensão lombar na máquina', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'));
+    ('Prancha', 'isolated', (SELECT id FROM equipment WHERE name = 'Bodyweight'), FALSE),
 
+    ('Hiperextensão lombar', 'isolated', (SELECT id FROM equipment WHERE name = 'Machine'), FALSE),
+    ('Hiperextensão lombar', 'isolated', (SELECT id FROM equipment WHERE name = 'Bodyweight'), FALSE);
+
+-- -----------------------------------------------------------------------------------------------
+-- Insert de ativação muscular
 INSERT INTO mscl_activation (idExercise, idMuscle, "role")
-SELECT e.id, m."name", v.role_::muscle_role
+
+-- os "::" é um casting do tipo v.role_ pra minha enum. Necessário por conta da tabela temporária
+SELECT e.id, m."name", v.role_::muscle_role 
+
+-- cria uma tabela virtual em memória durante a inserção pra ter a relação exercício, musculo, role por nome
 FROM (VALUES
+    -- Peito
     ('Supino reto', 'Peitoral', 'primary'),
     ('Supino reto', 'Deltoide', 'secondary'),
     ('Supino reto', 'Tríceps', 'secondary'),
@@ -208,10 +286,12 @@ FROM (VALUES
     ('Mergulho em paralela', 'Peitoral', 'primary'),
     ('Mergulho em paralela', 'Tríceps', 'primary'),
     ('Mergulho em paralela', 'Deltoide', 'secondary'),
-    ('Crossover na polia', 'Peitoral', 'primary'),
-    ('Crossover na polia', 'Deltoide', 'secondary'),
+    ('Crossover', 'Peitoral', 'primary'),
+    ('Crossover', 'Deltoide', 'secondary'),
     ('Crucifixo', 'Peitoral', 'primary'),
     ('Crucifixo', 'Deltoide', 'secondary'),
+
+    -- Costas
     ('Barra fixa', 'Dorsais', 'primary'),
     ('Barra fixa', 'Bíceps', 'secondary'),
     ('Barra fixa', 'Deltoide', 'secondary'),
@@ -226,19 +306,23 @@ FROM (VALUES
     ('Remada curvada', 'Romboides', 'primary'),
     ('Remada curvada', 'Lombar', 'secondary'),
     ('Remada curvada', 'Bíceps', 'secondary'),
-    ('Remada unilateral', 'Dorsais', 'primary'),
-    ('Remada unilateral', 'Romboides', 'primary'),
-    ('Remada unilateral', 'Bíceps', 'secondary'),
-    ('Remada unilateral', 'Deltoide', 'secondary'),
+    ('Remada serrote', 'Dorsais', 'primary'),
+    ('Remada serrote', 'Romboides', 'primary'),
+    ('Remada serrote', 'Bíceps', 'secondary'),
+    ('Remada serrote', 'Deltoide', 'secondary'),
+    ('Remada articulada', 'Dorsais', 'primary'),
+    ('Remada articulada', 'Romboides', 'primary'),
+    ('Remada articulada', 'Bíceps', 'secondary'),
     ('Remada cavalinho', 'Dorsais', 'primary'),
     ('Remada cavalinho', 'Bíceps', 'secondary'),
     ('Remada cavalinho', 'Deltoide', 'secondary'),
-    ('Puxada supinada', 'Dorsais', 'primary'),
-    ('Puxada supinada', 'Bíceps', 'secondary'),
     ('Face pull', 'Deltoide', 'primary'),
     ('Face pull', 'Trapézio', 'secondary'),
     ('Crucifixo invertido', 'Deltoide', 'primary'),
     ('Crucifixo invertido', 'Trapézio', 'secondary'),
+    ('Pulldown', 'Dorsais', 'primary'),
+
+    -- Ombro
     ('Desenvolvimento militar', 'Deltoide', 'primary'),
     ('Desenvolvimento militar', 'Tríceps', 'secondary'),
     ('Desenvolvimento com halteres', 'Deltoide', 'primary'),
@@ -248,69 +332,94 @@ FROM (VALUES
     ('Elevação lateral', 'Deltoide', 'primary'),
     ('Elevação frontal', 'Deltoide', 'primary'),
     ('Encolhimento', 'Trapézio', 'primary'),
+
+    -- Bíceps
     ('Rosca direta', 'Bíceps', 'primary'),
-    ('Rosca barra W', 'Bíceps', 'primary'),
-    ('Rosca alternada com halteres', 'Bíceps', 'primary'),
+    ('Rosca alternada', 'Bíceps', 'primary'),
     ('Rosca martelo', 'Bíceps', 'primary'),
     ('Rosca martelo', 'Antebraço', 'secondary'),
     ('Rosca Scott', 'Bíceps', 'primary'),
-    ('Rosca na polia', 'Bíceps', 'primary'),
     ('Rosca concentrada', 'Bíceps', 'primary'),
+    ('Rosca polia alta', 'Bíceps', 'primary'),
+    ('Rosca Bayesiana', 'Bíceps', 'primary'),
+    ('Rosca inclinada', 'Bíceps', 'primary'),
+    ('Rosca spider', 'Bíceps', 'primary'),
+
+    -- Tríceps
     ('Tríceps testa', 'Tríceps', 'primary'),
     ('Tríceps francês', 'Tríceps', 'primary'),
-    ('Tríceps na polia com barra reta', 'Tríceps', 'primary'),
-    ('Tríceps na polia com corda', 'Tríceps', 'primary'),
-    ('Tríceps supinado na polia', 'Tríceps', 'primary'),
-    ('Agachamento livre', 'Quadríceps', 'primary'),
-    ('Agachamento livre', 'Glúteo', 'secondary'),
-    ('Agachamento livre', 'Isquiotibiais', 'secondary'),
-    ('Agachamento livre', 'Abdômen', 'secondary'),
-    ('Agachamento livre', 'Lombar', 'secondary'),
-    ('Agachamento no Smith', 'Quadríceps', 'primary'),
-    ('Agachamento no Smith', 'Glúteo', 'secondary'),
+    ('Tríceps na polia', 'Tríceps', 'primary'),
+    ('Tríceps coice', 'Tríceps', 'primary'),
+    ('Supino fechado', 'Tríceps', 'primary'),
+    ('Supino fechado', 'Peitoral', 'secondary'),
+    ('Supino fechado', 'Deltoide', 'secondary'),
+
+    -- Quadríceps
+    ('Agachamento', 'Quadríceps', 'primary'),
+    ('Agachamento', 'Glúteo', 'secondary'),
+    ('Agachamento', 'Isquiotibiais', 'secondary'),
+    ('Agachamento', 'Abdômen', 'secondary'),
+    ('Agachamento', 'Lombar', 'secondary'),
     ('Agachamento hack', 'Quadríceps', 'primary'),
     ('Agachamento hack', 'Glúteo', 'secondary'),
-    ('Leg press', 'Quadríceps', 'primary'),
-    ('Leg press', 'Glúteo', 'secondary'),
-    ('Leg press', 'Isquiotibiais', 'secondary'),
+    ('Agachamento pêndulo', 'Quadríceps', 'primary'),
+    ('Agachamento pêndulo', 'Glúteo', 'secondary'),
+    ('Leg press 45', 'Quadríceps', 'primary'),
+    ('Leg press 45', 'Glúteo', 'secondary'),
+    ('Leg press 45', 'Isquiotibiais', 'secondary'),
+    ('Leg press 90', 'Quadríceps', 'primary'),
+    ('Leg press 90', 'Glúteo', 'secondary'),
+    ('Leg press 180', 'Quadríceps', 'primary'),
+    ('Leg press 180', 'Glúteo', 'secondary'),
     ('Cadeira extensora', 'Quadríceps', 'primary'),
-    ('Afundo com halteres', 'Quadríceps', 'primary'),
-    ('Afundo com halteres', 'Glúteo', 'secondary'),
+    ('Afundo', 'Quadríceps', 'primary'),
+    ('Afundo', 'Glúteo', 'secondary'),
     ('Agachamento búlgaro', 'Quadríceps', 'primary'),
     ('Agachamento búlgaro', 'Glúteo', 'primary'),
     ('Agachamento búlgaro', 'Abdômen', 'secondary'),
-    ('Levantamento terra convencional', 'Isquiotibiais', 'primary'),
-    ('Levantamento terra convencional', 'Glúteo', 'primary'),
-    ('Levantamento terra convencional', 'Lombar', 'primary'),
-    ('Levantamento terra convencional', 'Dorsais', 'secondary'),
-    ('Levantamento terra convencional', 'Trapézio', 'secondary'),
+
+    -- Posterior / Isquios
+    ('Levantamento terra', 'Isquiotibiais', 'primary'),
+    ('Levantamento terra', 'Glúteo', 'primary'),
+    ('Levantamento terra', 'Lombar', 'primary'),
+    ('Levantamento terra', 'Dorsais', 'secondary'),
+    ('Levantamento terra', 'Trapézio', 'secondary'),
     ('Levantamento terra romeno', 'Isquiotibiais', 'primary'),
     ('Levantamento terra romeno', 'Glúteo', 'primary'),
     ('Levantamento terra romeno', 'Lombar', 'secondary'),
     ('Levantamento terra stiff', 'Isquiotibiais', 'primary'),
     ('Levantamento terra stiff', 'Glúteo', 'secondary'),
     ('Levantamento terra stiff', 'Lombar', 'secondary'),
-    ('Mesa flexora', 'Isquiotibiais', 'primary'),
-    ('Mesa flexora em pé', 'Isquiotibiais', 'primary'),
+    ('Agachamento sumô', 'Glúteo', 'primary'),
+    ('Agachamento sumô', 'Quadríceps', 'primary'),
+    ('Agachamento sumô', 'Adutores', 'secondary'),
+    ('Cadeira flexora', 'Isquiotibiais', 'primary'),
+    ('Cama flexora', 'Isquiotibiais', 'primary'),
+    ('Cama flexora em pé', 'Isquiotibiais', 'primary'),
     ('Good morning', 'Isquiotibiais', 'primary'),
     ('Good morning', 'Lombar', 'primary'),
+
+    -- Glúteos / Adutores / Abdutores
     ('Elevação pélvica', 'Glúteo', 'primary'),
     ('Elevação pélvica', 'Isquiotibiais', 'secondary'),
-    ('Ponte de glúteo', 'Glúteo', 'primary'),
     ('Cadeira abdutora', 'Glúteo', 'primary'),
     ('Cadeira adutora', 'Adutores', 'primary'),
+
+    -- Panturrilha
     ('Panturrilha em pé', 'Panturrilha', 'primary'),
-    ('Panturrilha em pé unilateral', 'Panturrilha', 'primary'),
     ('Panturrilha sentado', 'Panturrilha', 'primary'),
-    ('Panturrilha no leg press', 'Panturrilha', 'primary'),
+
+    -- Core / Abdômen / Lombar
     ('Abdominal declinado', 'Abdômen', 'primary'),
     ('Abdominal na corda', 'Abdômen', 'primary'),
     ('Abdominal suspenso', 'Abdômen', 'primary'),
     ('Abdominal suspenso', 'Flexores de quadril', 'secondary'),
-    ('Abdominal com peso', 'Abdômen', 'primary'),
+    ('Abdominal dragonflag', 'Abdômen', 'primary'),
     ('Prancha', 'Abdômen', 'primary'),
-    ('Hiperextensão lombar', 'Lombar', 'primary'),
-    ('Extensão lombar na máquina', 'Lombar', 'primary')
+    ('Hiperextensão lombar', 'Lombar', 'primary')
 ) AS v(ex_name, musc_name, role_)
+
 JOIN exercise e ON e."name" = v.ex_name
 JOIN muscle m ON m."name" = v.musc_name;
+-- -----------------------------------------------------------------------------------------------
+
